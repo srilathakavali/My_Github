@@ -1,0 +1,80 @@
+import java.util.Scanner;
+
+class CoinChanger {
+
+  int[] bills = {1, 2, 5, 10, 20, 50, 100};
+  int[] coins = {1, 5, 10, 25};
+  
+  int penny = 100;
+  int nickel = 100;
+  int dime = 100;
+  int quarter = 100;
+
+  public void getChange(int amount) {
+    if(amount <= 0) {
+      System.out.println("Invalid amount");
+      return;
+    }
+    
+    int remaining = amount;
+    
+    int numQuarters = remaining / 25;
+    if(numQuarters > quarter) {
+      System.out.println("Not enough quarters");
+      return;
+    }
+    remaining = remaining % 25;
+    quarter -= numQuarters;
+    
+    int numDimes = remaining / 10;
+    if(numDimes > dime) {
+      System.out.println("Not enough dimes");
+      return;  
+    }
+    remaining = remaining % 10;
+    dime -= numDimes;
+
+    int numNickels = remaining / 5;
+    if(numNickels > nickel) {
+      System.out.println("Not enough nickels");
+      return;
+    }
+    remaining = remaining % 5;
+    nickel -= numNickels;
+
+    int numPennies = remaining;
+    if(numPennies > penny) {
+      System.out.println("Not enough pennies");
+      return;
+    }
+    penny -= numPennies;
+
+    System.out.println("Quarters: " + numQuarters);
+    System.out.println("Dimes: " + numDimes);
+    System.out.println("Nickels: " + numNickels);
+    System.out.println("Pennies: " + numPennies);
+  }
+
+  public static void main(String[] args) {
+
+    CoinChanger cc = new CoinChanger();
+
+    cc.getChange(127);
+
+    System.out.println("Test Case 1:");
+    System.out.println("Input: 127");
+    
+
+    cc.getChange(94);
+    
+    System.out.println("Test Case 2:");
+    System.out.println("Input: 94");
+    
+
+    cc.getChange(138);
+    
+    System.out.println("Test Case 3:");
+    System.out.println("Input: 138");
+    
+  }
+}
