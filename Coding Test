@@ -1,0 +1,72 @@
+// "static void main" must be defined in a public class.
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("Hello World!");
+        coinCounter c = new coinCounter();
+        int res[] = c.countNeeded(31);
+        if(res[res.length-1] == -1) System.out.println("Not enough coins");
+        System.out.println("0.25 : " + res[3] +
+                           "  , 0.10 : " + res[2] + 
+                           "  , 0.05 : " + res[1] + 
+                           "  , 0.01 : " + res[0]);
+        // System.out.println(Arrays.toString(c.countNeeded(90)));
+        c.showCounts();
+    }
+    
+    int coinCounts[] = {100,100,100,100};
+    
+    static class coinCounter{
+        static final double coins[] = {0.01,0.05,0.10,0.25};
+        static int coinsCounts[] = {100,100,100,100};
+        static int bill;
+        public coinCounter(){
+            // this.bill
+        }
+        
+        void showCounts(){
+            System.out.println(Arrays.toString(coinsCounts));
+        }
+        
+        int[] countNeeded(int billAmount){
+            int res[] = new int[coins.length + 1];
+            try{
+                double bill = billAmount;
+                if(!coinChangePossible(bill)) return new int[]{0,0,0,0,-1};
+                
+                DecimalFormat df = new DecimalFormat("#.#");
+                for(int i=coins.length-1;i>=0;i--){
+                    double coin = coins[i];
+                    int coinCount = coinsCounts[i];
+                    double currCoinAmount = coin * coinCount;
+                    while(bill > 0 & coinCount > 0){
+                        String formattedResult = df.format(bill);
+                        bill = Double.parseDouble(formattedResult);
+                        bill -= coin;
+                        coinCount--;
+                        res[i]++;
+                        // System.out.println(bill + " : ");
+                    }
+                    coinsCounts[i] = coinCount;
+                    if(bill == 0) break;
+                }
+                return res;
+            }catch(Exception e){
+                System.out.println(e);
+            } finally{
+                
+            }
+            return res;
+        }
+        
+        boolean coinChangePossible(double bill){
+            double totalAmount = 0;
+            for(int i=0;i<coins.length;i++){
+                totalAmount += coins[i] * coinsCounts[i];
+            }
+            int coinAmount = (int)Math.floor(totalAmount);
+            
+            return (bill - coinAmount) <= 0;
+        }
+        
+    }
+}
